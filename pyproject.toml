@@ -1,12 +1,18 @@
 [tool.poetry]
 name = "fbpy"
 version = "0.1.0"
-description = ""
+description = "some helper functions and convenience functions for maths and physics teachers in a German Gymnasium"
 authors = ["Fabian Bühler <buehler.fabian@gmx.de>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.9,<3.12"
+numpy = "^1.26.2"
+matplotlib = "^3.8.2"
+scipy = "^1.11.4"
+sympy = "^1.12"
+flake8 = "^6.1.0"
+jupyterlab = "^4.0.9"
 
 
 [build-system]
