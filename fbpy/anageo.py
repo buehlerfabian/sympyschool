@@ -35,8 +35,10 @@ def angle(v1, v2, unit="deg"):
     Args:
         v1 (vector): first vector
         v2 (vector): second vector
-        unit (str, optional): Determines the measuring unit for the return value.
-            "deg" for degree (0° to 360°), "rad" for radian (0 to 2*pi). Defaults to "deg".
+        unit (str, optional): Determines the measuring unit for the
+        return value.
+            "deg" for degree (0° to 360°), "rad" for radian (0 to 2*pi).
+            Defaults to "deg".
 
     Raises:
         ValueError: if unit is not "deg" or "rad"
@@ -45,7 +47,8 @@ def angle(v1, v2, unit="deg"):
         float: value for the angle
     """
     if unit not in ["deg", "rad"]:
-        raise ValueError("Unrecognized units {}; expected deg or rad".format(unit))
+        raise ValueError(
+            "Unrecognized units {}; expected deg or rad".format(unit))
     if unit == "deg":
         return sp.acos(v1.normalized().dot(v2.normalized())) * 360 / (2*sp.pi)
     else:
@@ -85,7 +88,8 @@ def is_parallel(v1, v2):
     if len(v1) != len(v2):
         raise ValueError('vectors do not have the same dimensions')
     elif len(v1) == 3:
-        eqlist = list(set([sp.simplify(sp.Eq(v1.cross(v2)[i], 0)) for i in range(len(v1))]))
+        eqlist = list(set([sp.simplify(sp.Eq(v1.cross(v2)[i], 0))
+                      for i in range(len(v1))]))
         if eqlist == [True]:
             return True
         elif False in eqlist:
@@ -101,8 +105,9 @@ def is_parallel(v1, v2):
 
 
 def relative_length(v1, v2):
-    """Returns the length of the first vector relative to the second vector, if both are
-    parallel to each other. If they are not parallel, false is returned.
+    """Returns the length of the first vector relative to the second vector,
+    if both are parallel to each other.
+    If they are not parallel, false is returned.
 
     Args:
         v1 (vector): first vector
@@ -173,7 +178,8 @@ class Line:
         return self.p._repr_latex_()[:-1]+'+t'+self.u._repr_latex_()[1:]
 
     def get_point(self, t):
-        """Returns the position vector to the point corresponding to the given parameter value
+        """Returns the position vector to the point corresponding to the
+        given parameter value
 
         Args:
             t (float): parameter value
@@ -234,15 +240,18 @@ class Line:
             return eqlist
 
     def intersection(self, e):
-        """Checks if there is an intersection; if true, returns intersetion point
+        """Checks if there is an intersection; if true, returns
+        intersetion point
 
         Args:
             e (line): second line
 
         Returns:
-            boolean or vector: False if no intersection, otherwise intersection point
+            boolean or vector: False if no intersection,
+            otherwise intersection point
         """
-        sol = sp.linsolve((sp.Matrix([list(self.u), list(e.u)]).transpose(), -self.p + e.p))
+        sol = sp.linsolve(
+            (sp.Matrix([list(self.u), list(e.u)]).transpose(), -self.p + e.p))
         sol = list(sol)
         if len(sol) > 0:
             return self.get_point(sol[0][0])
@@ -281,8 +290,8 @@ class Line:
             return self.distance_from_point(l2.p)
 
     def perpendicular_basepoint(self, o):
-        """Calculates the point on the line that is closest to p, i.e. the vector
-        connecting both points is perpendicular to the line.
+        """Calculates the point on the line that is closest to p, i.e.
+        the vector connecting both points is perpendicular to the line.
 
         Args:
             o (point or line): point or line
@@ -401,7 +410,8 @@ class Plane:
         if is_vector(o):
             return sp.Eq((o-self.p).dot(self.n), 0)
         elif is_line(o):
-            # return [i for i in self.is_element(o.p)].append(sp.Eq(o.u.dot(self.n),0))
+            # return [i for i in self.is_element(o.p)].append(
+            # sp.Eq(o.u.dot(self.n),0))
             ret = [self.is_element(o.p), sp.Eq(o.u.dot(self.n), 0)]
             if False in ret:
                 return False
@@ -467,23 +477,30 @@ class Plane:
                 x1, x2, x3 = sp.symbols('x1 x2 x3')
                 excl_params = self.getCoordinateEq().free_symbols.union(
                     o.getCoordinateEq().free_symbols) - {x1, x2, x3}
-                sol = sp.solve([self.getCoordinateEq(), o.getCoordinateEq()], exclude=excl_params)
+                sol = sp.solve(
+                    [self.getCoordinateEq(), o.getCoordinateEq()],
+                    exclude=excl_params)
                 freevar_set = set.intersection(x1.subs(sol).free_symbols,
-                                               x2.subs(sol).free_symbols, x3.subs(sol).free_symbols)
+                                               x2.subs(sol).free_symbols,
+                                               x3.subs(sol).free_symbols)
                 if len(freevar_set) == 0:
-                    # no free variable in the equations, that means one of the variables
+                    # no free variable in the equations, that means one of
+                    # the variables
                     # is completely missing
                     # and therefore free
                     freevar_set = {x1, x2, x3} - set(sol.keys())
                 freevar = next(iter(freevar_set))
-                p = vvv(x1.subs(sol).subs(freevar, 0), x2.subs(sol).subs(freevar, 0),
+                p = vvv(x1.subs(sol).subs(freevar, 0),
+                        x2.subs(sol).subs(freevar, 0),
                         x3.subs(sol).subs(freevar, 0))
-                u = vvv(x1.subs(sol).subs(freevar, 1), x2.subs(sol).subs(freevar, 1),
+                u = vvv(x1.subs(sol).subs(freevar, 1),
+                        x2.subs(sol).subs(freevar, 1),
                         x3.subs(sol).subs(freevar, 1)) - p
                 return Line(p, u)
 
     def perpendicular_basepoint(self, p):
-        """Calculates the point on the plane that is closest to p, i.e. the vector
+        """Calculates the point on the plane that is closest to p, i.e.
+        the vector
         connecting both points is perpendicular to the plane.
 
         Args:
