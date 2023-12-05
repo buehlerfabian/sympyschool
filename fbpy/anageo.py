@@ -116,6 +116,7 @@ def relative_length(v1, v2):
     Returns:
         number: length of v1 relative to the length of v2
     """
+    # TODO raise error if v1, v2 not numeric
     if (not is_parallel(v1, v2)) or v2.norm() == 0:
         return False
     else:

@@ -1,7 +1,6 @@
 *.pyc
 
-# local config file that contains login credentials
-config.py
+temp.ipynb
 
 # Packages
 *.egg
