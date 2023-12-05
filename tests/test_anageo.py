@@ -92,6 +92,23 @@ class Test_Anageo_Basic(unittest.TestCase):
             v2 = 5
             ag.is_perpendicular(v1, v2)
 
+    def test_relative_length(self):
+        v1 = ag.vvv(1, 2, 3)
+        v2 = ag.vvv(2, 4, 6)
+        self.assertEqual(ag.relative_length(v1, v2),
+                         sp.Rational(1, 2))
+
+        v1 = ag.vvv(sp.pi, 2*sp.pi, 3*sp.pi)
+        v2 = ag.vvv(1, 2, 3)
+        self.assertEqual(ag.relative_length(v1, v2),
+                         sp.pi)
+
+        a = sp.symbols('a')
+        v1 = ag.vvv(1, 2, a)
+        v2 = ag.vvv(2, 4, 2*a)
+        with self.assertRaises(ValueError):
+            ag.relative_length(v1, v2)
+
 
 if __name__ == '__main__':
     unittest.main()
