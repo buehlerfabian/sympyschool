@@ -542,6 +542,17 @@ class Plane:
             return 0
 
     def distance_from_plane(self, p):
+        """Returns the distance between self and other plane.
+
+        Args:
+            p (Plane): plane to which distance is to be calculated
+
+        Raises:
+            TypeError: if p is not a plane
+
+        Returns:
+            float: distance between self and other plane
+        """
         if not is_plane(p):
             raise TypeError("Parameter p must be a plane.")
         if is_parallel(self.n, p.n):
