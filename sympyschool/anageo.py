@@ -457,9 +457,6 @@ class Plane:
             Point: intersection point with line
             Line: intersection line with another plane
         """
-        # FIXME eE = Plane.fromCoordinateEq(1,1,0,4)
-        # eF = Plane.fromCoordinateEq(1,1,2,4)
-        # eF.intersection(eE)
         if not is_line(o) and not is_plane(o):
             raise TypeError("Parameter must be a line or a plane")
         if is_line(o):
