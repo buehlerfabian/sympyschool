@@ -1,4 +1,4 @@
-import fbpy.stochjgst as st
+import sympyschool.stochjgst as st
 import unittest
 
 

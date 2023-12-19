@@ -1,4 +1,4 @@
-import fbpy.anageo as ag
+import sympyschool.anageo as ag
 import sympy as sp
 import unittest
 
