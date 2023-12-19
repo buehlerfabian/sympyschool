@@ -39,7 +39,7 @@ def binomP(n, p, expr):
     Args:
         n (integer): chain length
         p (float): hit probability
-        expr (string): i.e. "==10" or "<=5" or "(>=5) & (<=10)"
+        expr (string): i.e. "X==10" or "X<=5" or "(X>=5) & (X<=10)"
 
     Returns:
         float: P(expr) for X=B_n;p
