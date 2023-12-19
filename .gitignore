@@ -1,6 +1,7 @@
 *.pyc
 
 temp.ipynb
+anageo_temp.ipynb
 
 # Packages
 *.egg
