@@ -110,5 +110,16 @@ class Test_Anageo_Basic(unittest.TestCase):
             ag.relative_length(v1, v2)
 
 
+class Test_Anageo_Plane(unittest.TestCase):
+    def test_fromCoordinateEq(self):
+        e1 = ag.Plane.fromCoordinateEq(1, 1, 0, 4)
+        self.assertEqual(e1.n, ag.vvv(1, 1, 0))
+        self.assertEqual((e1.n).dot(e1.p - ag.vvv(4, 0, 0)), 0)
+
+        e2 = ag.Plane.fromCoordinateEq(1, 1, 2, 4)
+        self.assertEqual(e2.n, ag.vvv(1, 1, 2))
+        self.assertEqual((e2.n).dot(e2.p - ag.vvv(4, 0, 0)), 0)
+
+
 if __name__ == '__main__':
     unittest.main()

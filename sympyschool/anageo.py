@@ -330,7 +330,7 @@ class Plane:
         """
         self.p = p
         if n[0].is_integer and n[1].is_integer and n[2].is_integer:
-            gcd = sp.gcd(n[0], n[1]).gcd(n[2])
+            gcd = sp.gcd(sp.gcd(n[0], n[1]), n[2])
             n = n / gcd
         self.n = n
 
