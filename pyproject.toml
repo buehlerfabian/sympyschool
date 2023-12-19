@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "fbpy"
+name = "sympyschool"
 version = "0.1.0"
 description = "some helper functions and convenience functions for maths and physics teachers in a German Gymnasium"
 authors = ["Fabian Bühler <buehler.fabian@gmx.de>"]
