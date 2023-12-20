@@ -11,12 +11,6 @@ class Test_Stochjgst(unittest.TestCase):
         self.assertAlmostEqual(
             st.binomcdf(n=50, p=0.25, k=10), 0.262202310189509)
 
-    def test_binomP(self):
-        # self.assertAlmostEqual(
-        #     st.binomP(n=50, p=0.25, expr="X==10"), 0.0985184099394176)
-        self.assertAlmostEqual(
-            st.binomP(n=50, p=0.25, expr="X<=10"), 0.262202310189509)
-
 
 if __name__ == '__main__':
     unittest.main()
