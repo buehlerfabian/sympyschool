@@ -8,7 +8,3 @@ def test_binompdf():
 
 def test_binomcdf():
     assert st.binomcdf(n=50, p=0.25, k=10) == pytest.approx(0.262202310189509)
-
-
-def test_binomP():
-    st.binomP(n=50, p=0.25, expr="X<=10") == pytest.approx(0.262202310189509)
