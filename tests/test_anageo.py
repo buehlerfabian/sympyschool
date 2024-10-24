@@ -1,125 +1,134 @@
 import sympyschool.anageo as ag
 import sympy as sp
-import unittest
 
 
-class Test_Anageo_Basic(unittest.TestCase):
-    def test_vvv(self):
-        vec = ag.vvv(1, 2, 3)
-        self.assertIsInstance(vec, sp.matrices.dense.MutableDenseMatrix)
-        self.assertEqual(len(vec), 3)
-        self.assertListEqual(list(vec), [1, 2, 3])
+def test_vvv():
+    vec = ag.vvv(1, 2, 3)
+    assert isinstance(vec, sp.matrices.dense.MutableDenseMatrix)
+    assert len(vec) == 3
+    assert list(vec) == [1, 2, 3]
 
-    def test_vv(self):
-        vec = ag.vv(1, 2)
-        self.assertIsInstance(vec, sp.matrices.dense.MutableDenseMatrix)
-        self.assertEqual(len(vec), 2)
-        self.assertListEqual(list(vec), [1, 2])
 
-    def test_angle(self):
-        v1 = ag.vvv(1, 2, 3)
-        v2 = ag.vvv(2, -1, 0)
-        self.assertEqual(ag.angle(v1, v2), 90)
-        self.assertEqual(ag.angle(v1, v2, unit="deg"), 90)
-        self.assertEqual(ag.angle(v1, v2, unit="rad"), sp.pi/2)
-        self.assertEqual(ag.angle(v1, v2, "rad"), sp.pi/2)
+def test_vv():
+    vec = ag.vv(1, 2)
+    assert isinstance(vec, sp.matrices.dense.MutableDenseMatrix)
+    assert len(vec) == 2
+    assert list(vec) == [1, 2]
 
-        v1 = ag.vvv(1, 2, 3)
-        v2 = ag.vvv(2, 4, 6)
-        self.assertEqual(ag.angle(v1, v2), 0)
-        self.assertEqual(ag.angle(v1, v2, unit="deg"), 0)
-        self.assertEqual(ag.angle(v1, v2, unit="rad"), 0)
-        self.assertEqual(ag.angle(v1, v2, "rad"), 0)
 
-        v1 = ag.vvv(1, 0, 0)
-        v2 = ag.vvv(1, 1, 0)
-        self.assertEqual(ag.angle(v1, v2), 45)
-        self.assertEqual(ag.angle(v1, v2, unit="deg"), 45)
-        self.assertEqual(ag.angle(v1, v2, unit="rad"), sp.pi/4)
-        self.assertEqual(ag.angle(v1, v2, "rad"), sp.pi/4)
+def test_angle():
+    v1 = ag.vvv(1, 2, 3)
+    v2 = ag.vvv(2, -1, 0)
+    assert ag.angle(v1, v2) == 90
+    assert ag.angle(v1, v2, unit="deg") == 90
+    assert ag.angle(v1, v2, unit="rad") == sp.pi/2
+    assert ag.angle(v1, v2, "rad") == sp.pi/2
 
-        v1 = ag.vvv(1, 2, 3)
-        v2 = ag.vvv(3, 2, 1)
-        self.assertEqual(sp.simplify(ag.angle(v1, v2, "rad") -
-                                     sp.acos(sp.Rational(5, 7))), 0)
+    v1 = ag.vvv(1, 2, 3)
+    v2 = ag.vvv(2, 4, 6)
+    assert ag.angle(v1, v2) == 0
+    assert ag.angle(v1, v2, unit="deg") == 0
+    assert ag.angle(v1, v2, unit="rad") == 0
+    assert ag.angle(v1, v2, "rad") == 0
 
-        a = sp.symbols('a', positive=True)
-        v1 = ag.vvv(1, 1, a)
-        v2 = ag.vvv(1, 1, 1)
-        self.assertEqual(sp.simplify(ag.angle(v1, v2) -
-                                     (180*sp.acos(
-                                         sp.sqrt(3)*(a + 2) /
-                                         (3*sp.sqrt(a**2 + 2)))/sp.pi)), 0)
+    v1 = ag.vvv(1, 0, 0)
+    v2 = ag.vvv(1, 1, 0)
+    assert ag.angle(v1, v2) == 45
+    assert ag.angle(v1, v2, unit="deg") == 45
+    assert ag.angle(v1, v2, unit="rad") == sp.pi/4
+    assert ag.angle(v1, v2, "rad") == sp.pi/4
 
-        with self.assertRaises(ValueError):
-            ag.angle(v1, v2, "bla")
+    v1 = ag.vvv(1, 2, 3)
+    v2 = ag.vvv(3, 2, 1)
+    assert sp.simplify(ag.angle(v1, v2, "rad") -
+                       sp.acos(sp.Rational(5, 7))) == 0
 
-    def test_is_perpendicular(self):
-        v1 = ag.vvv(1, 2, 3)
-        v2 = ag.vvv(2, -1, 0)
-        self.assertTrue(ag.is_perpendicular(v1, v2))
+    a = sp.symbols('a', positive=True)
+    v1 = ag.vvv(1, 1, a)
+    v2 = ag.vvv(1, 1, 1)
+    assert sp.simplify(ag.angle(v1, v2) -
+                       (180*sp.acos(
+                           sp.sqrt(3)*(a + 2) /
+                           (3*sp.sqrt(a**2 + 2)))/sp.pi)) == 0
 
-        v1 = ag.vvv(1, 2, 3)
-        v2 = ag.vvv(2, -1, 1)
-        self.assertFalse(ag.is_perpendicular(v1, v2))
+    try:
+        ag.angle(v1, v2, "bla")
+        assert False
+    except ValueError:
+        assert True
 
+
+def test_is_perpendicular():
+    v1 = ag.vvv(1, 2, 3)
+    v2 = ag.vvv(2, -1, 0)
+    assert ag.is_perpendicular(v1, v2)
+
+    v1 = ag.vvv(1, 2, 3)
+    v2 = ag.vvv(2, -1, 1)
+    assert not ag.is_perpendicular(v1, v2)
+
+    v1 = ag.vv(1, 2)
+    v2 = ag.vv(2, -1)
+    assert ag.is_perpendicular(v1, v2)
+
+    v1 = ag.vv(1, 2)
+    v2 = ag.vv(2, -2)
+    assert not ag.is_perpendicular(v1, v2)
+
+    a = sp.symbols('a')
+    v1 = ag.vvv(1, a, 2)
+    v2 = ag.vvv(1, 1, 1)
+    assert sp.simplify(ag.is_perpendicular(v1, v2)) == sp.Eq(a, -3)
+
+    try:
         v1 = ag.vv(1, 2)
-        v2 = ag.vv(2, -1)
-        self.assertTrue(ag.is_perpendicular(v1, v2))
+        v2 = ag.vvv(2, -2, -1)
+        ag.is_perpendicular(v1, v2)
+        assert False
+    except ValueError:
+        assert True
 
-        v1 = ag.vv(1, 2)
-        v2 = ag.vv(2, -2)
-        self.assertFalse(ag.is_perpendicular(v1, v2))
+    try:
+        v1 = 5
+        v2 = ag.vvv(2, -2, -1)
+        ag.is_perpendicular(v1, v2)
+        assert False
+    except ValueError:
+        assert True
 
-        a = sp.symbols('a')
-        v1 = ag.vvv(1, a, 2)
-        v2 = ag.vvv(1, 1, 1)
-        self.assertEqual(sp.simplify(ag.is_perpendicular(v1, v2)),
-                         sp.Eq(a, -3))
-
-        with self.assertRaises(ValueError):
-            v1 = ag.vv(1, 2)
-            v2 = ag.vvv(2, -2, -1)
-            ag.is_perpendicular(v1, v2)
-
-        with self.assertRaises(ValueError):
-            v1 = 5
-            v2 = ag.vvv(2, -2, -1)
-            ag.is_perpendicular(v1, v2)
-
-        with self.assertRaises(ValueError):
-            v1 = ag.vvv(2, -2, -1)
-            v2 = 5
-            ag.is_perpendicular(v1, v2)
-
-    def test_relative_length(self):
-        v1 = ag.vvv(1, 2, 3)
-        v2 = ag.vvv(2, 4, 6)
-        self.assertEqual(ag.relative_length(v1, v2),
-                         sp.Rational(1, 2))
-
-        v1 = ag.vvv(sp.pi, 2*sp.pi, 3*sp.pi)
-        v2 = ag.vvv(1, 2, 3)
-        self.assertEqual(ag.relative_length(v1, v2),
-                         sp.pi)
-
-        a = sp.symbols('a')
-        v1 = ag.vvv(1, 2, a)
-        v2 = ag.vvv(2, 4, 2*a)
-        with self.assertRaises(ValueError):
-            ag.relative_length(v1, v2)
+    try:
+        v1 = ag.vvv(2, -2, -1)
+        v2 = 5
+        ag.is_perpendicular(v1, v2)
+        assert False
+    except ValueError:
+        assert True
 
 
-class Test_Anageo_Plane(unittest.TestCase):
-    def test_fromCoordinateEq(self):
-        e1 = ag.Plane.fromCoordinateEq(1, 1, 0, 4)
-        self.assertEqual(e1.n, ag.vvv(1, 1, 0))
-        self.assertEqual((e1.n).dot(e1.p - ag.vvv(4, 0, 0)), 0)
+def test_relative_length():
+    v1 = ag.vvv(1, 2, 3)
+    v2 = ag.vvv(2, 4, 6)
+    assert ag.relative_length(v1, v2) == sp.Rational(1, 2)
 
-        e2 = ag.Plane.fromCoordinateEq(1, 1, 2, 4)
-        self.assertEqual(e2.n, ag.vvv(1, 1, 2))
-        self.assertEqual((e2.n).dot(e2.p - ag.vvv(4, 0, 0)), 0)
+    v1 = ag.vvv(sp.pi, 2*sp.pi, 3*sp.pi)
+    v2 = ag.vvv(1, 2, 3)
+    assert ag.relative_length(v1, v2) == sp.pi
+
+    a = sp.symbols('a')
+    v1 = ag.vvv(1, 2, a)
+    v2 = ag.vvv(2, 4, 2*a)
+    try:
+        ag.relative_length(v1, v2)
+        assert False
+    except ValueError:
+        assert True
 
 
-if __name__ == '__main__':
-    unittest.main()
+def test_fromCoordinateEq():
+    e1 = ag.Plane.fromCoordinateEq(1, 1, 0, 4)
+    assert e1.n == ag.vvv(1, 1, 0)
+    assert (e1.n).dot(e1.p - ag.vvv(4, 0, 0)) == 0
+
+    e2 = ag.Plane.fromCoordinateEq(1, 1, 2, 4)
+    assert e2.n == ag.vvv(1, 1, 2)
+    assert (e2.n).dot(e2.p - ag.vvv(4, 0, 0)) == 0
