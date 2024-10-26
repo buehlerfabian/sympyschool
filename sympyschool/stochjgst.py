@@ -88,3 +88,156 @@ def vierfeldertafel(ab=None, abq=None, a=None,
         display(Math(table))
     else:
         return s
+
+
+class Hypothesentest_rechts():
+    """
+    A class to perform a right-tailed hypothesis test for a binomial
+    distribution.
+    Attributes
+    ----------
+    n : int
+        The number of trials in the binomial distribution.
+    p0 : float
+        The null hypothesis probability of success.
+    alpha : float
+        The significance level of the test.
+    Methods
+    -------
+    get_ablehnungsbereich():
+        Calculates and returns the critical value (rejection region) for the
+        test.
+    get_irrtumswahrscheinlichkeit():
+        Calculates and returns the type I error probability (alpha) for the
+        test.
+    get_fehler2(p):
+        Calculates and returns the type II error probability (beta) for a
+        given alternative hypothesis probability p.
+    """
+
+    def __init__(self, n, p0, alpha):
+        self.n = n
+        self.p0 = p0
+        self.alpha = alpha
+        self._grenz_k = None
+
+    def get_ablehnungsbereich(self):
+        if self._grenz_k is None:
+            X = Binomial("X", n=self.n, p=self.p0)
+            # lambdify P(X>=k) to avoid sympy's slow evaluation
+            k = sp.symbols('k')
+            pf = sp.lambdify(k, P(X >= k))
+
+            for m in range(self.n+1):
+                if pf(m) <= self.alpha:
+                    self._grenz_k = m
+                    break
+        return self._grenz_k
+
+    def get_irrtumswahrscheinlichkeit(self):
+        X = Binomial("X", n=self.n, p=self.p0)
+        return P(X >= self.get_ablehnungsbereich())
+
+    def get_fehler2(self, p):
+        X = Binomial("X", n=self.n, p=p)
+        return P(X < self.get_ablehnungsbereich())
+
+
+class Hypothesentest_links():
+    """
+    A class to perform a left-tailed hypothesis test for a binomial
+    distribution.
+    Attributes
+    ----------
+    n : int
+        The number of trials in the binomial distribution.
+    p0 : float
+        The null hypothesis probability of success.
+    alpha : float
+        The significance level of the test.
+
+    Methods
+    -------
+    get_ablehnungsbereich():
+        Calculates and returns the critical value for the rejection region.
+    get_irrtumswahrscheinlichkeit():
+        Calculates and returns the Type I error probability (alpha).
+    get_fehler2(p):
+        Calculates and returns the Type II error probability for a given
+        alternative hypothesis probability p.
+    """
+
+    def __init__(self, n, p0, alpha):
+        self.n = n
+        self.p0 = p0
+        self.alpha = alpha
+        self._grenz_k = None
+
+    def get_ablehnungsbereich(self):
+        if self._grenz_k is None:
+            X = Binomial("X", n=self.n, p=self.p0)
+            # lambdify P(X<=k) to avoid sympy's slow evaluation
+            k = sp.symbols('k')
+            pf = sp.lambdify(k, P(X <= k))
+
+            for m in range(self.n+1):
+                if pf(m) > self.alpha:
+                    self._grenz_k = m-1
+                    break
+        return self._grenz_k
+
+    def get_irrtumswahrscheinlichkeit(self):
+        X = Binomial("X", n=self.n, p=self.p0)
+        return P(X <= self.get_ablehnungsbereich())
+
+    def get_fehler2(self, p):
+        X = Binomial("X", n=self.n, p=p)
+        return P(X > self.get_ablehnungsbereich())
+
+
+class Hypothesentest_beidseitig():
+    """
+    A class to perform a two-sided hypothesis test.
+    Attributes:
+    -----------
+    n : int
+        The number of trials.
+    p0 : float
+        The null hypothesis probability.
+    alpha : float
+        The significance level.
+    Methods:
+    --------
+    get_ablehnungsbereich_links():
+        Returns the rejection region for the left-sided test.
+    get_ablehnungsbereich_rechts():
+        Returns the rejection region for the right-sided test.
+    get_irrtumswahrscheinlichkeit():
+        Returns the probability of a type I error (alpha).
+    get_fehler2(p):
+        Returns the probability of a type II error (beta) for a given
+        alternative hypothesis probability p.
+    """
+
+    def __init__(self, n, p0, alpha):
+        self.n = n
+        self.p0 = p0
+        self.alpha = alpha
+        self._h_links = Hypothesentest_links(n, p0, alpha/2)
+        self._h_rechts = Hypothesentest_rechts(n, p0, alpha/2)
+
+    def get_ablehnungsbereich_links(self):
+        return self._h_links.get_ablehnungsbereich()
+
+    def get_ablehnungsbereich_rechts(self):
+        return self._h_rechts.get_ablehnungsbereich()
+
+    def get_irrtumswahrscheinlichkeit(self):
+        X = Binomial("X", n=self.n, p=self.p0)
+        return (P(X >= self.get_ablehnungsbereich_rechts()) +
+                P(X <= self.get_ablehnungsbereich_links()))
+
+    def get_fehler2(self, p):
+        X = Binomial("X", n=self.n, p=p)
+        return (P(sp.And(X > self.get_ablehnungsbereich_links(),
+                         X < self.get_ablehnungsbereich_rechts())))
