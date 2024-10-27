@@ -33,3 +33,28 @@ def test_vierfeldertafel():
     assert result[sp.symbols('aqbq')] == 42
     assert result[sp.symbols('aq')] == 210
     assert result[sp.symbols('bq')] == 168
+
+
+def test_hypothesentest_rechts():
+    h = st.Hypothesentest_rechts(n=500, p0=.85, alpha=0.05)
+    assert h.get_ablehnungsbereich() == 439
+    assert h.get_irrtumswahrscheinlichkeit() == (
+        pytest.approx(0.0426251508811221))
+    assert h.get_fehler2(.86) == pytest.approx(0.864157809720006)
+
+
+def test_hypothesentest_links():
+    h = st.Hypothesentest_links(n=200, p0=.08, alpha=0.05)
+    assert h.get_ablehnungsbereich() == 9
+    assert h.get_irrtumswahrscheinlichkeit() == (
+        pytest.approx(0.0373707322519869))
+    assert h.get_fehler2(.04) == pytest.approx(0.280799998664119)
+
+
+def test_hypothesentest_beidseitig():
+    h = st.Hypothesentest_beidseitig(n=100, p0=.15, alpha=0.05)
+    assert h.get_ablehnungsbereich_links() == 7
+    assert h.get_ablehnungsbereich_rechts() == 23
+    assert h.get_irrtumswahrscheinlichkeit() == (
+        pytest.approx(0.0343072490221749))
+    assert h.get_fehler2(.1) == pytest.approx(0.79383498187626)
