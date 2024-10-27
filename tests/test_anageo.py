@@ -132,3 +132,27 @@ def test_fromCoordinateEq():
     e2 = ag.Plane.fromCoordinateEq(1, 1, 2, 4)
     assert e2.n == ag.vvv(1, 1, 2)
     assert (e2.n).dot(e2.p - ag.vvv(4, 0, 0)) == 0
+
+
+def test_orientation_relative_to_line():
+    # Identical lines
+    l1 = ag.Line(ag.vvv(1, 2, 3), ag.vvv(4, 5, 6))
+    l2 = ag.Line(ag.vvv(5, 7, 9), ag.vvv(4, 5, 6))
+    assert l1.orientation_relative_to_line(l2) == "The lines are identical."
+
+    # Parallel lines
+    l1 = ag.Line(ag.vvv(1, 2, 3), ag.vvv(4, 5, 6))
+    l2 = ag.Line(ag.vvv(2, 4, 6), ag.vvv(8, 10, 12))
+    assert l1.orientation_relative_to_line(l2) == "The lines are parallel."
+
+    # Intersecting lines
+    l1 = ag.Line(ag.vvv(1, 2, 3), ag.vvv(4, 5, 6))
+    l2 = ag.Line(ag.vvv(1, 2, 3), ag.vvv(-6, 5, 4))
+    assert l1.orientation_relative_to_line(
+        l2) == "The lines intersect at (1|2|3)."
+
+    # Skew lines
+    l1 = ag.Line(ag.vvv(1, 2, 3), ag.vvv(4, 5, 6))
+    l2 = ag.Line(ag.vvv(7, 8, 9), ag.vvv(-6, 5, 4))
+    assert l1.orientation_relative_to_line(
+        l2) == "The lines are skew (neither parallel nor intersecting)."
