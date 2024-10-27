@@ -1,6 +1,7 @@
 from sympy.stats import Binomial, density, P
 import sympy as sp
 from IPython.display import display, Math
+from scipy.stats import binom
 
 
 def binompdf(n, p, k):
@@ -119,28 +120,15 @@ class Hypothesentest_rechts():
         self.n = n
         self.p0 = p0
         self.alpha = alpha
-        self._grenz_k = None
 
     def get_ablehnungsbereich(self):
-        if self._grenz_k is None:
-            X = Binomial("X", n=self.n, p=self.p0)
-            # lambdify P(X>=k) to avoid sympy's slow evaluation
-            k = sp.symbols('k')
-            pf = sp.lambdify(k, P(X >= k))
-
-            for m in range(self.n+1):
-                if pf(m) <= self.alpha:
-                    self._grenz_k = m
-                    break
-        return self._grenz_k
+        return binom.ppf(1 - self.alpha, self.n, self.p0) + 1
 
     def get_irrtumswahrscheinlichkeit(self):
-        X = Binomial("X", n=self.n, p=self.p0)
-        return P(X >= self.get_ablehnungsbereich())
+        return binom.sf(self.get_ablehnungsbereich()-1, self.n, self.p0)
 
     def get_fehler2(self, p):
-        X = Binomial("X", n=self.n, p=p)
-        return P(X < self.get_ablehnungsbereich())
+        return binom.cdf(self.get_ablehnungsbereich()-1, self.n, p)
 
 
 class Hypothesentest_links():
@@ -174,25 +162,13 @@ class Hypothesentest_links():
         self._grenz_k = None
 
     def get_ablehnungsbereich(self):
-        if self._grenz_k is None:
-            X = Binomial("X", n=self.n, p=self.p0)
-            # lambdify P(X<=k) to avoid sympy's slow evaluation
-            k = sp.symbols('k')
-            pf = sp.lambdify(k, P(X <= k))
-
-            for m in range(self.n+1):
-                if pf(m) > self.alpha:
-                    self._grenz_k = m-1
-                    break
-        return self._grenz_k
+        return binom.ppf(self.alpha, self.n, self.p0)-1
 
     def get_irrtumswahrscheinlichkeit(self):
-        X = Binomial("X", n=self.n, p=self.p0)
-        return P(X <= self.get_ablehnungsbereich())
+        return binom.cdf(self.get_ablehnungsbereich(), self.n, self.p0)
 
     def get_fehler2(self, p):
-        X = Binomial("X", n=self.n, p=p)
-        return P(X > self.get_ablehnungsbereich())
+        return binom.sf(self.get_ablehnungsbereich(), self.n, p)
 
 
 class Hypothesentest_beidseitig():
@@ -233,11 +209,9 @@ class Hypothesentest_beidseitig():
         return self._h_rechts.get_ablehnungsbereich()
 
     def get_irrtumswahrscheinlichkeit(self):
-        X = Binomial("X", n=self.n, p=self.p0)
-        return (P(X >= self.get_ablehnungsbereich_rechts()) +
-                P(X <= self.get_ablehnungsbereich_links()))
+        return self._h_links.get_irrtumswahrscheinlichkeit() + \
+            self._h_rechts.get_irrtumswahrscheinlichkeit()
 
     def get_fehler2(self, p):
-        X = Binomial("X", n=self.n, p=p)
-        return (P(sp.And(X > self.get_ablehnungsbereich_links(),
-                         X < self.get_ablehnungsbereich_rechts())))
+        return (binom.cdf(self.get_ablehnungsbereich_rechts()-1, self.n, p) -
+                binom.cdf(self.get_ablehnungsbereich_links(), self.n, p))
