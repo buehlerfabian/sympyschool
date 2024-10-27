@@ -321,6 +321,38 @@ class Line:
             sol = sp.solve([eq1, eq2], [s, t])
             return [p1.subs(sol), p2.subs(sol)]
 
+    def orientation_relative_to_line(self, line2):
+        """
+        Determines the orientation of the current line relative to another
+        line.
+        Parameters:
+        line2 (Line): The line to compare with the current line.
+        Returns:
+        str: A description of the relationship between the two lines. Possible
+        values are:
+            - "The lines are identical.\n" if the lines are identical.
+            - "The lines are parallel." if the lines are parallel but not
+            identical.
+            - "The lines intersect at {intersection}." if the lines intersect,
+            where {intersection} is the point of intersection.
+            - "The lines are skew (neither parallel nor intersecting)." if the
+            lines are neither parallel nor intersecting.
+        """
+
+        if self.is_identical(line2):
+            return "The lines are identical."
+        elif self.is_parallel(line2):
+            return "The lines are parallel."
+        else:
+            intersection = self.intersection(line2)
+            if intersection:
+                return (f"The lines intersect at"
+                        f" ({intersection[0]}|{intersection[1]}"
+                        f"|{intersection[2]}).")
+            else:
+                return ("The lines are skew"
+                        " (neither parallel nor intersecting).")
+
 
 class Plane:
     def __init__(self, p, n):
@@ -336,7 +368,7 @@ class Plane:
             n = n / gcd
         self.n = n
 
-    @classmethod
+    @ classmethod
     def fromParametricEq(cls, s, u, v):
         """Creates a plane with given location vector and 2 'spannvektoren'
 
@@ -352,7 +384,7 @@ class Plane:
         p = s
         return cls(p, n)
 
-    @classmethod
+    @ classmethod
     def fromCoordinateEq(cls, a1, a2, a3, c):
         """Creates a plane from coordinate form a1*x1 + a2*x2 + a3*x3 = c
 
