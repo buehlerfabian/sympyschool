@@ -1,5 +1,6 @@
 import sympyschool.anageo as ag
 import sympy as sp
+import pytest
 
 
 def test_vvv():
@@ -124,6 +125,17 @@ def test_relative_length():
         assert True
 
 
+def test_line_init():
+    p = ag.vvv(1, 2, 3)
+    u = ag.vvv(4, 5, 6)
+    line = ag.Line(p, u)
+    assert line.p == p
+    assert line.u == u
+
+    with pytest.raises(ValueError):
+        ag.Line(ag.vvv(1, 2, 3), ag.vvv(0, 0, 0))
+
+
 def test_PlanefromCoordinateEq():
     e1 = ag.Plane.fromCoordinateEq(1, 1, 0, 4)
     assert e1.n == ag.vvv(1, 1, 0)
@@ -133,6 +145,22 @@ def test_PlanefromCoordinateEq():
     assert e2.n == ag.vvv(1, 1, 2)
     assert (e2.n).dot(e2.p - ag.vvv(4, 0, 0)) == 0
 
+    with pytest.raises(ValueError):
+        ag.Plane.fromCoordinateEq(0, 0, 0, 0)
+
+    with pytest.raises(ValueError):
+        ag.Plane.fromCoordinateEq(0, 0, 0, 2)
+
+
+def test_PlaneFromParametricEq():
+    e1 = ag.Plane.fromParametricEq(ag.vvv(1, 2, 3),
+                                   ag.vvv(1, 1, 1), ag.vvv(1, 0, 1))
+    assert e1.n == ag.vvv(1, 0, -1)
+
+    with pytest.raises(ValueError):
+        ag.Plane.fromParametricEq(ag.vvv(1, 2, 3),
+                                  ag.vvv(1, 1, 1), ag.vvv(2, 2, 2))
+
 
 def test_PlaneFromPoints():
     E = ag.Plane.fromPoints(ag.vvv(1, -1, 1), ag.vvv(2, 1, 0), ag.vvv(0, 1, 1))
@@ -140,6 +168,9 @@ def test_PlaneFromPoints():
     assert E.is_element(ag.vvv(1, -1, 1))
     assert E.is_element(ag.vvv(2, 1, 0))
     assert E.is_element(ag.vvv(0, 1, 1))
+
+    with pytest.raises(ValueError):
+        ag.Plane.fromPoints(ag.vvv(1, 1, 1), ag.vvv(2, 2, 1), ag.vvv(3, 3, 1))
 
 
 def test_orientation_relative_to_line():

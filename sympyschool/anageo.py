@@ -169,6 +169,9 @@ class Line:
             p (vector): position vector
             u (vector): direction vector
         """
+        if u.norm() == 0:
+            raise ValueError("Direction vector u cannot be a zero vector.")
+        self.p = p
         self.p = p
         self.u = u
 
@@ -368,7 +371,7 @@ class Plane:
             n = n / gcd
         self.n = n
 
-    @ classmethod
+    @classmethod
     def fromParametricEq(cls, s, u, v):
         """Creates a plane with given location vector and 2 'spannvektoren'
 
@@ -381,6 +384,8 @@ class Plane:
             Plane: Plane object
         """
         n = u.cross(v)
+        if n.norm() == 0:
+            raise ValueError("Spannvektoren must not be parallel.")
         p = s
         return cls(p, n)
 
@@ -398,7 +403,11 @@ class Plane:
         """
         u = p2 - p1
         v = p3 - p1
-        return cls.fromParametricEq(p1, u, v)
+        try:
+            e = cls.fromParametricEq(p1, u, v)
+        except ValueError:
+            raise ValueError("Points must not be on a straight line.")
+        return e
 
     @ classmethod
     def fromCoordinateEq(cls, a1, a2, a3, c):
@@ -413,6 +422,9 @@ class Plane:
         Returns:
             Plane: Plane object
         """
+        if (sp.sympify(a1).is_zero and sp.sympify(a2).is_zero
+                and sp.sympify(a3).is_zero):
+            raise ValueError("At least one of a1, a2, a3 must be non-zero.")
         if not sp.sympify(a1).is_zero:
             p = vvv(sp.Rational(c, a1), 0, 0)
         elif not sp.sympify(a2).is_zero:
