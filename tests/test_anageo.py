@@ -1,5 +1,6 @@
 import sympyschool.anageo as ag
 import sympy as sp
+import pytest
 
 
 def test_vvv():
@@ -122,6 +123,17 @@ def test_relative_length():
         assert False
     except ValueError:
         assert True
+
+
+def test_line_init():
+    p = ag.vvv(1, 2, 3)
+    u = ag.vvv(4, 5, 6)
+    line = ag.Line(p, u)
+    assert line.p == p
+    assert line.u == u
+
+    with pytest.raises(ValueError):
+        ag.Line(ag.vvv(1, 2, 3), ag.vvv(0, 0, 0))
 
 
 def test_fromCoordinateEq():

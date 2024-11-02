@@ -169,6 +169,9 @@ class Line:
             p (vector): position vector
             u (vector): direction vector
         """
+        if u.norm() == 0:
+            raise ValueError("Direction vector u cannot be a zero vector.")
+        self.p = p
         self.p = p
         self.u = u
 
