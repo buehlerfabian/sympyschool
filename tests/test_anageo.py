@@ -136,7 +136,7 @@ def test_line_init():
         ag.Line(ag.vvv(1, 2, 3), ag.vvv(0, 0, 0))
 
 
-def test_fromCoordinateEq():
+def test_PlanefromCoordinateEq():
     e1 = ag.Plane.fromCoordinateEq(1, 1, 0, 4)
     assert e1.n == ag.vvv(1, 1, 0)
     assert (e1.n).dot(e1.p - ag.vvv(4, 0, 0)) == 0
@@ -144,6 +144,14 @@ def test_fromCoordinateEq():
     e2 = ag.Plane.fromCoordinateEq(1, 1, 2, 4)
     assert e2.n == ag.vvv(1, 1, 2)
     assert (e2.n).dot(e2.p - ag.vvv(4, 0, 0)) == 0
+
+
+def test_PlaneFromPoints():
+    E = ag.Plane.fromPoints(ag.vvv(1, -1, 1), ag.vvv(2, 1, 0), ag.vvv(0, 1, 1))
+    assert E.n == ag.vvv(2, 1, 4)
+    assert E.is_element(ag.vvv(1, -1, 1))
+    assert E.is_element(ag.vvv(2, 1, 0))
+    assert E.is_element(ag.vvv(0, 1, 1))
 
 
 def test_orientation_relative_to_line():

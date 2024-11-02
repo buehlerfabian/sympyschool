@@ -387,6 +387,22 @@ class Plane:
         p = s
         return cls(p, n)
 
+    @classmethod
+    def fromPoints(cls, p1, p2, p3):
+        """Creates a plane from 3 points
+
+        Args:
+            p1 (vector): first point
+            p2 (vector): second point
+            p3 (vector): third point
+
+        Returns:
+            Plane: Plane object
+        """
+        u = p2 - p1
+        v = p3 - p1
+        return cls.fromParametricEq(p1, u, v)
+
     @ classmethod
     def fromCoordinateEq(cls, a1, a2, a3, c):
         """Creates a plane from coordinate form a1*x1 + a2*x2 + a3*x3 = c
