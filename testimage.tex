@@ -11,9 +11,8 @@
 \tikzset{z={(0mm,10mm)}}
 \begin{document}
 \begin{tikzpicture}[>=latex]
-\draw[->] (0,0) -- (1,0) node[left] {$x$};
-\draw[->] (0,0) -- (0,1) node[above] {$y$};
-\draw[->] (0,0) -- (0,0,1) node[left] {$z$};
-\filldraw[fill=gray!20,draw=black] (0,0) -- (1,1) -- (2,1) -- (1,0) -- cycle;
+\filldraw (6,0,0) coordinate (s1) circle[radius=.7mm] node[left] {$S_1$};\filldraw (0,3,0) coordinate (s2) circle[radius=.7mm] node[below] {$S_2$};\filldraw (0,0,4) coordinate (s3) circle[radius=.7mm] node[left] {$S_3$};\filldraw [fill=black!20] (s1) -- (s2) -- (s3) -- cycle;\draw[->] (0,0) -- (7,0) node[left] {$x_1$};
+\draw[->] (0,0) -- (0,4) node[above] {$x_2$};
+\draw[->] (0,0) -- (0,0,5) node[left] {$x_3$};
 \end{tikzpicture}
 \end{document}

@@ -1,8 +1,8 @@
 # Fdb version 4
-["pdflatex"] 1730720719 "/home/fabi/pyprog/sympyschool/testimage.tex" "testimage.pdf" "testimage" 1730720719 0
+["pdflatex"] 1730731165 "/home/fabi/pyprog/sympyschool/testimage.tex" "testimage.pdf" "testimage" 1730731165 0
   "/dev/null" 1730703408 0 d41d8cd98f00b204e9800998ecf8427e ""
   "/etc/texmf/web2c/texmf.cnf" 1730219442 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/fabi/pyprog/sympyschool/testimage.tex" 1730720719 606 77579a8f888174099ffe3069203f7ae7 ""
+  "/home/fabi/pyprog/sympyschool/testimage.tex" 1730731165 810 9ddc5be43a1265ee9659d2e8b61cdb8e ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/palatino/pplr7t.tfm" 1136768653 1804 7b5f73028f6509167f47ace9d69509ed ""
@@ -15,7 +15,9 @@
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/mathpazo/zplmr7t.tfm" 1136768653 1828 bb8add3bd19426549f9267c88b0cb8bd ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/mathpazo/zplmr7v.tfm" 1136768653 1012 955c4ca523d7827d33db91a33412b048 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/mathpazo/zplmr7y.tfm" 1136768653 1316 b4037e9c09961a72f8476628774e1ec1 ""
+  "/usr/share/texlive/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb" 1136849748 52665 661b1e6b26edb5f50dd491f8a701cb57 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb" 1136849748 50022 90249cba7e3e4e9845f80328d6f9bd13 ""
+  "/usr/share/texlive/texmf-dist/fonts/vf/adobe/palatino/pplr7t.vf" 1136768653 1380 037725697594405988999f61172f52de ""
   "/usr/share/texlive/texmf-dist/fonts/vf/public/mathpazo/zplmr7m.vf" 1136768653 1812 de7624743c8bafe2ce204bec2f72ce7e ""
   "/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii" 1461363279 71627 94eb9990bed73c364d7f53f960cc8c5b ""
   "/usr/share/texlive/texmf-dist/tex/generic/babel-german/ngerman.ldf" 1614462139 2289 b1d356015c8fd065cb4437d567449559 ""
@@ -134,8 +136,8 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1681034085 39561 34c98e380bf7c7201ee6a7909aff625a ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1730219467 4515355 a319ad0bcc0d6802e7fde951d7e1b7da ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1730219483 6975780 9cca1edfb236cd0adc17f849a6ff763a ""
-  "testimage.aux" 1730720719 132 063cd77255c8c60019cf8d1b2062afe8 "pdflatex"
-  "testimage.tex" 1730720719 606 77579a8f888174099ffe3069203f7ae7 ""
+  "testimage.aux" 1730731165 132 063cd77255c8c60019cf8d1b2062afe8 "pdflatex"
+  "testimage.tex" 1730731165 810 9ddc5be43a1265ee9659d2e8b61cdb8e ""
   (generated)
   "testimage.aux"
   "testimage.log"

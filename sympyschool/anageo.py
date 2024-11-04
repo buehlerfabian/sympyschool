@@ -703,13 +703,36 @@ class Plane:
         preimage += r"\tikzset{z={(0mm,10mm)}}" "\n"
         preimage += r"\begin{document}" "\n"
         preimage += r"\begin{tikzpicture}[>=latex]" "\n"
-        imagecode = r"\draw[->] (0,0) -- (1,0) node[left] {$x$};" "\n"
-        imagecode += r"\draw[->] (0,0) -- (0,1) node[above] {$y$};" "\n"
-        imagecode += r"\draw[->] (0,0) -- (0,0,1) node[left] {$z$};" "\n"
-        imagecode += (r"\filldraw[fill=gray!20,draw=black] (0,0) -- (1,1)"
-                      " -- (2,1) -- (1,0) -- cycle;" "\n")
         postimage = r"\end{tikzpicture}" "\n"
         postimage += r"\end{document}" "\n"
+
+        # simple case: all 3 tracepoints exist
+        tx1 = self.get_tracepoint_x1()
+        tx2 = self.get_tracepoint_x2()
+        tx3 = self.get_tracepoint_x3()
+        imagecode = (r"\filldraw ("
+                     f"{sp.ceiling(tx1[0].evalf())}"
+                     r",0,0) coordinate (s1) circle[radius=.7mm]"
+                     r" node[left] {$S_1$};")
+        imagecode += (r"\filldraw (0,"
+                      f"{sp.ceiling(tx2[1].evalf())}"
+                      r",0) coordinate (s2) circle[radius=.7mm]"
+                      r" node[below] {$S_2$};")
+        imagecode += (r"\filldraw (0,0,"
+                      f"{sp.ceiling(tx3[2].evalf())}"
+                      r") coordinate (s3) circle[radius=.7mm]"
+                      r" node[left] {$S_3$};")
+        imagecode += (r"\filldraw [fill=black!20] (s1) --"
+                      r" (s2) -- (s3) -- cycle;")
+        imagecode += (r"\draw[->] (0,0) -- ("
+                      f"{sp.ceiling(tx1[0].evalf())+1}"
+                      r",0) node[left] {$x_1$};" "\n")
+        imagecode += (r"\draw[->] (0,0) -- (0,"
+                      f"{sp.ceiling(tx2[1].evalf())+1}"
+                      r") node[above] {$x_2$};" "\n")
+        imagecode += (r"\draw[->] (0,0) -- (0,0,"
+                      f"{sp.ceiling(tx3[2].evalf())+1}"
+                      r") node[left] {$x_3$};" "\n")
 
         if filename is None:
             return (preimage+imagecode+postimage)
