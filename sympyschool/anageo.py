@@ -619,3 +619,37 @@ class Plane:
             return self.distance_from_point(p.p)
         else:
             return 0
+
+    def create_tikz_image(self, filename=None, color=False):
+        """Creates a TikZ image of the plane.
+
+        Args:
+            filename (str): name of the file
+        """
+        preimage = r"\documentclass{standalone}" "\n"
+        preimage += r"\usepackage{mathpazo}" "\n"
+        preimage += r"\usepackage[utf8]{inputenc}" "\n"
+        preimage += r"\usepackage[T1]{fontenc}" "\n"
+        preimage += r"\usepackage[ngerman]{babel}" "\n"
+        preimage += r"\usepackage{siunitx}" "\n"
+        preimage += (r"\sisetup{locale=DE, per-mode=fraction, "
+                     "separate-uncertainty=true}" "\n")
+        preimage += r"\usepackage{tikz}" "\n"
+        preimage += r"\tikzset{x={(-3.85mm,-3.85mm)}}" "\n"
+        preimage += r"\tikzset{y={(10mm,0mm)}}" "\n"
+        preimage += r"\tikzset{z={(0mm,10mm)}}" "\n"
+        preimage += r"\begin{document}" "\n"
+        preimage += r"\begin{tikzpicture}[>=latex]" "\n"
+        imagecode = r"\draw[->] (0,0) -- (1,0) node[left] {$x$};" "\n"
+        imagecode += r"\draw[->] (0,0) -- (0,1) node[above] {$y$};" "\n"
+        imagecode += r"\draw[->] (0,0) -- (0,0,1) node[left] {$z$};" "\n"
+        imagecode += (r"\filldraw[fill=gray!20,draw=black] (0,0) -- (1,1)"
+                      " -- (2,1) -- (1,0) -- cycle;" "\n")
+        postimage = r"\end{tikzpicture}" "\n"
+        postimage += r"\end{document}" "\n"
+
+        if filename is None:
+            return (preimage+imagecode+postimage)
+        else:
+            with open(filename, "w") as f:
+                f.write(preimage+imagecode+postimage)

@@ -1,0 +1,19 @@
+\documentclass{standalone}
+\usepackage{mathpazo}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{siunitx}
+\sisetup{locale=DE, per-mode=fraction, separate-uncertainty=true}
+\usepackage{tikz}
+\tikzset{x={(-3.85mm,-3.85mm)}}
+\tikzset{y={(10mm,0mm)}}
+\tikzset{z={(0mm,10mm)}}
+\begin{document}
+\begin{tikzpicture}[>=latex]
+\draw[->] (0,0) -- (1,0) node[left] {$x$};
+\draw[->] (0,0) -- (0,1) node[above] {$y$};
+\draw[->] (0,0) -- (0,0,1) node[left] {$z$};
+\filldraw[fill=gray!20,draw=black] (0,0) -- (1,1) -- (2,1) -- (1,0) -- cycle;
+\end{tikzpicture}
+\end{document}
