@@ -195,3 +195,36 @@ def test_orientation_relative_to_line():
     l2 = ag.Line(ag.vvv(7, 8, 9), ag.vvv(-6, 5, 4))
     assert l1.orientation_relative_to_line(
         l2) == "The lines are skew (neither parallel nor intersecting)."
+
+
+def test_plane_get_tracepoint_x1():
+    E = ag.Plane.fromCoordinateEq(2, 3, 4, 8)
+    assert E.get_tracepoint_x1() == ag.vvv(4, 0, 0)
+
+    E = ag.Plane.fromCoordinateEq(0, 2, 4, 8)
+    assert E.get_tracepoint_x1() is None
+
+    E = ag.Plane.fromCoordinateEq(0, 2, 4, 0)
+    assert E.get_tracepoint_x1() == ag.vvv(0, 0, 0)
+
+
+def test_plane_get_tracepoint_x2():
+    E = ag.Plane.fromCoordinateEq(2, 3, 4, 8)
+    assert E.get_tracepoint_x2() == ag.vvv(0, sp.Rational(8, 3), 0)
+
+    E = ag.Plane.fromCoordinateEq(2, 0, 4, 8)
+    assert E.get_tracepoint_x2() is None
+
+    E = ag.Plane.fromCoordinateEq(2, 0, 4, 0)
+    assert E.get_tracepoint_x2() == ag.vvv(0, 0, 0)
+
+
+def test_plane_get_tracepoint_x3():
+    E = ag.Plane.fromCoordinateEq(2, 3, 4, 8)
+    assert E.get_tracepoint_x3() == ag.vvv(0, 0, 2)
+
+    E = ag.Plane.fromCoordinateEq(2, 3, 0, 8)
+    assert E.get_tracepoint_x3() is None
+
+    E = ag.Plane.fromCoordinateEq(2, 3, 0, 0)
+    assert E.get_tracepoint_x3() == ag.vvv(0, 0, 0)
