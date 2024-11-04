@@ -619,3 +619,66 @@ class Plane:
             return self.distance_from_point(p.p)
         else:
             return 0
+
+    def get_tracepoint_x1(self):
+        """
+        Calculate the trace point of the plane on the x1 axis.
+        This method computes the coordinate of the intersection between the
+        plane and the x1-axis.
+        Returns:
+            tuple or None: A tuple representing the trace point if the
+            plane intersects the x-axis, or None if the plane is parallel
+            to the x2-x3 plane.
+        """
+        rhs = self.n.dot(self.p)
+
+        if rhs == 0:
+            return vvv(0, 0, 0)
+
+        if self.n[0] == 0:
+            return None
+        else:
+            nx1 = self.n[0]
+            return vvv(rhs/nx1, 0, 0)
+
+    def get_tracepoint_x2(self):
+        """
+        Calculate the trace point of the plane on the x2 axis.
+        This method computes the coordinate of the intersection between the
+        plane and the x2-axis.
+        Returns:
+            tuple or None: A tuple representing the trace point if the
+            plane intersects the x2-axis, or None if the plane is parallel
+            to the x1-x3 plane.
+        """
+        rhs = self.n.dot(self.p)
+
+        if rhs == 0:
+            return vvv(0, 0, 0)
+
+        if self.n[1] == 0:
+            return None
+        else:
+            nx2 = self.n[1]
+            return vvv(0, rhs/nx2, 0)
+
+    def get_tracepoint_x3(self):
+        """
+        Calculate the trace point of the plane on the x3 axis.
+        This method computes the coordinate of the intersection between the
+        plane and the x3-axis.
+        Returns:
+            tuple or None: A tuple representing the trace point if the
+            plane intersects the x3-axis, or None if the plane is parallel
+            to the x1-x2 plane.
+        """
+        rhs = self.n.dot(self.p)
+
+        if rhs == 0:
+            return vvv(0, 0, 0)
+
+        if self.n[2] == 0:
+            return None
+        else:
+            nx3 = self.n[2]
+            return vvv(0, 0, rhs/nx3)
