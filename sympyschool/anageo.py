@@ -1,4 +1,4 @@
-# import numpy as np
+import numpy as np
 import sympy as sp
 
 
@@ -683,12 +683,7 @@ class Plane:
             nx3 = self.n[2]
             return vvv(0, 0, rhs/nx3)
 
-    def create_tikz_image(self, filename=None, color=False):
-        """Creates a TikZ image of the plane.
-
-        Args:
-            filename (str): name of the file
-        """
+    def _create_tikz_preimage(self):
         preimage = r"\documentclass{standalone}" "\n"
         preimage += r"\usepackage{mathpazo}" "\n"
         preimage += r"\usepackage[utf8]{inputenc}" "\n"
@@ -703,39 +698,147 @@ class Plane:
         preimage += r"\tikzset{z={(0mm,10mm)}}" "\n"
         preimage += r"\begin{document}" "\n"
         preimage += r"\begin{tikzpicture}[>=latex]" "\n"
+        return preimage
+
+    def _create_tikz_postimage(self):
         postimage = r"\end{tikzpicture}" "\n"
         postimage += r"\end{document}" "\n"
+        return postimage
+
+    def _get_image_x1min(self):
+        tx1 = self.get_tracepoint_x1()
+        if tx1[0] < 0:
+            return np.floor(tx1[0].evalf())-1
+        else:
+            return 0
+
+    def _get_image_x1max(self):
+        tx1 = self.get_tracepoint_x1()
+        if tx1[0] > 0:
+            return np.ceil(tx1[0].evalf())+1
+        else:
+            return 1
+
+    def _get_image_x2min(self):
+        tx2 = self.get_tracepoint_x2()
+        if tx2[1] < 0:
+            return np.floor(tx2[1].evalf())-1
+        else:
+            return 0
+
+    def _get_image_x2max(self):
+        tx2 = self.get_tracepoint_x2()
+        if tx2[1] > 0:
+            return np.ceil(tx2[1].evalf())+1
+        else:
+            return 1
+
+    def _get_image_x3min(self):
+        tx3 = self.get_tracepoint_x3()
+        if tx3[2] < 0:
+            return np.floor(tx3[2].evalf())-1
+        else:
+            return 0
+
+    def _get_image_x3max(self):
+        tx3 = self.get_tracepoint_x3()
+        if tx3[2] > 0:
+            return np.ceil(tx3[2].evalf())+1
+        else:
+            return 1
+
+    def _get_image_ticks_code_x1(self):
+        tickslist = np.arange(self._get_image_x1min(),
+                              self._get_image_x1max())
+        tickscode = ""
+
+        for x in tickslist:
+            tickscode += (f"\\draw ({x},0,0.1) -- ({x},0,-0.1)"
+                          " node[below, font=\\small]"
+                          f" {{${x}$}};\n")
+
+        return tickscode
+
+    def _get_image_ticks_code_x2(self):
+        tickslist = np.arange(self._get_image_x2min(),
+                              self._get_image_x2max())
+        tickscode = ""
+
+        for x in tickslist:
+            tickscode += (f"\\draw (0,{x},0.1) -- (0,{x},-0.1) "
+                          "node[below,font=\\small]"
+                          f" {{${x}$}};\n")
+
+        return tickscode
+
+    def _get_image_ticks_code_x3(self):
+        tickslist = np.arange(self._get_image_x3min(),
+                              self._get_image_x3max())
+        tickscode = ""
+
+        for x in tickslist:
+            tickscode += (f"\\draw (-0.1,0,{x}) -- (0.1,0,{x}) "
+                          "node[left,font=\\small]"
+                          f" {{${x}$}};\n")
+
+        return tickscode
+
+    def create_tikz_image(self, filename=None, color=False):
+        """Creates a TikZ image of the plane.
+
+        Args:
+            filename (str): name of the file
+        """
+
+        code = ""
+
+        code += self._create_tikz_preimage()
 
         # simple case: all 3 tracepoints exist
-        tx1 = self.get_tracepoint_x1()
-        tx2 = self.get_tracepoint_x2()
-        tx3 = self.get_tracepoint_x3()
-        imagecode = (r"\filldraw ("
-                     f"{sp.ceiling(tx1[0].evalf())}"
-                     r",0,0) coordinate (s1) circle[radius=.7mm]"
-                     r" node[left] {$S_1$};")
-        imagecode += (r"\filldraw (0,"
-                      f"{sp.ceiling(tx2[1].evalf())}"
-                      r",0) coordinate (s2) circle[radius=.7mm]"
-                      r" node[below] {$S_2$};")
-        imagecode += (r"\filldraw (0,0,"
-                      f"{sp.ceiling(tx3[2].evalf())}"
-                      r") coordinate (s3) circle[radius=.7mm]"
-                      r" node[left] {$S_3$};")
-        imagecode += (r"\filldraw [fill=black!20] (s1) --"
-                      r" (s2) -- (s3) -- cycle;")
-        imagecode += (r"\draw[->] (0,0) -- ("
-                      f"{sp.ceiling(tx1[0].evalf())+1}"
-                      r",0) node[left] {$x_1$};" "\n")
-        imagecode += (r"\draw[->] (0,0) -- (0,"
-                      f"{sp.ceiling(tx2[1].evalf())+1}"
-                      r") node[above] {$x_2$};" "\n")
-        imagecode += (r"\draw[->] (0,0) -- (0,0,"
-                      f"{sp.ceiling(tx3[2].evalf())+1}"
-                      r") node[left] {$x_3$};" "\n")
+        tx1 = self.get_tracepoint_x1()[0].evalf()
+        tx2 = self.get_tracepoint_x2()[1].evalf()
+        tx3 = self.get_tracepoint_x3()[2].evalf()
+        code += (r"\filldraw ("
+                 f"{tx1}"
+                 r",0,0) coordinate (s1) circle[radius=.7mm]"
+                 r" node[left] {$S_1$};"
+                 "\n")
+        code += (r"\filldraw (0,"
+                 f"{tx2}"
+                 r",0) coordinate (s2) circle[radius=.7mm]"
+                 r" node[above] {$S_2$};"
+                 "\n")
+        code += (r"\filldraw (0,0,"
+                 f"{tx3}"
+                 r") coordinate (s3) circle[radius=.7mm]"
+                 r" node[right] {$S_3$};"
+                 "\n")
+        code += (r"\filldraw [fill=black, fill opacity=0.25] (s1) --"
+                 r" (s2) -- (s3) -- cycle;"
+                 "\n")
+        code += (r"\draw[->] ("
+                 f"{self._get_image_x1min()}"
+                 ",0) -- ("
+                 f"{self._get_image_x1max()}"
+                 r",0) node[left] {$x_1$};" "\n")
+        code += self._get_image_ticks_code_x1()
+        code += (r"\draw[->] (0,"
+                 f"{self._get_image_x2min()}"
+                 ") -- (0,"
+                 f"{self._get_image_x2max()}"
+                 r") node[above] {$x_2$};" "\n")
+        code += self._get_image_ticks_code_x2()
+        code += (r"\draw[->] (0,0,"
+                 f"{self._get_image_x3min()}"
+                 ") -- (0,0,"
+                 f"{self._get_image_x3max()}"
+                 r") node[left] {$x_3$};" "\n")
+        code += self._get_image_ticks_code_x3()
+
+        code += self._create_tikz_postimage()
 
         if filename is None:
-            return (preimage+imagecode+postimage)
+            return (code)
         else:
             with open(filename, "w") as f:
-                f.write(preimage+imagecode+postimage)
+                f.write(code)
