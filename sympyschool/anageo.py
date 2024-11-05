@@ -777,7 +777,7 @@ class Plane:
         tickscode = ""
 
         for x in tickslist:
-            tickscode += (f"\\draw (-0.1,0,{x}) -- (0.1,0,{x}) "
+            tickscode += (f"\\draw (0,0.1,{x}) -- (0,-0.1,{x}) "
                           "node[left,font=\\small]"
                           f" {{${x}$}};\n")
 
@@ -790,6 +790,11 @@ class Plane:
             filename (str): name of the file
         """
 
+        if color:
+            colorstring = "blue"
+        else:
+            colorstring = "black"
+
         code = ""
 
         code += self._create_tikz_preimage()
@@ -798,22 +803,36 @@ class Plane:
         tx1 = self.get_tracepoint_x1()[0].evalf()
         tx2 = self.get_tracepoint_x2()[1].evalf()
         tx3 = self.get_tracepoint_x3()[2].evalf()
-        code += (r"\filldraw ("
+        code += (r"\filldraw["
+                 f"{colorstring}"
+                 "] ("
                  f"{tx1}"
                  r",0,0) coordinate (s1) circle[radius=.7mm]"
-                 r" node[left] {$S_1$};"
+                 r" node[left,"
+                 f"{colorstring}"
+                 "] {$S_1$};"
                  "\n")
-        code += (r"\filldraw (0,"
+        code += (r"\filldraw["
+                 f"{colorstring}"
+                 "] (0,"
                  f"{tx2}"
                  r",0) coordinate (s2) circle[radius=.7mm]"
-                 r" node[above] {$S_2$};"
+                 r" node[above,"
+                 f"{colorstring}"
+                 "] {$S_2$};"
                  "\n")
-        code += (r"\filldraw (0,0,"
+        code += (r"\filldraw["
+                 f"{colorstring}"
+                 "] (0,0,"
                  f"{tx3}"
                  r") coordinate (s3) circle[radius=.7mm]"
-                 r" node[right] {$S_3$};"
+                 r" node[right,"
+                 f"{colorstring}"
+                 "] {$S_3$};"
                  "\n")
-        code += (r"\filldraw [fill=black, fill opacity=0.25] (s1) --"
+        code += (r"\filldraw ["
+                 f"{colorstring}"
+                 r", fill opacity=0.25] (s1) --"
                  r" (s2) -- (s3) -- cycle;"
                  "\n")
         code += (r"\draw[->] ("

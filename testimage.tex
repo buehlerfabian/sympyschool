@@ -11,30 +11,27 @@
 \tikzset{z={(0mm,10mm)}}
 \begin{document}
 \begin{tikzpicture}[>=latex]
-\filldraw (6.00000000000000,0,0) coordinate (s1) circle[radius=.7mm] node[left] {$S_1$};
-\filldraw (0,-3.00000000000000,0) coordinate (s2) circle[radius=.7mm] node[above] {$S_2$};
-\filldraw (0,0,-4.00000000000000) coordinate (s3) circle[radius=.7mm] node[right] {$S_3$};
-\filldraw [fill=black, fill opacity=0.25] (s1) -- (s2) -- (s3) -- cycle;
-\draw[->] (0,0) -- (7,0) node[left] {$x_1$};
+\filldraw[blue] (5.00000000000000,0,0) coordinate (s1) circle[radius=.7mm] node[left,blue] {$S_1$};
+\filldraw[blue] (0,2.50000000000000,0) coordinate (s2) circle[radius=.7mm] node[above,blue] {$S_2$};
+\filldraw[blue] (0,0,3.33333333333333) coordinate (s3) circle[radius=.7mm] node[right,blue] {$S_3$};
+\filldraw [blue, fill opacity=0.25] (s1) -- (s2) -- (s3) -- cycle;
+\draw[->] (0,0) -- (6,0) node[left] {$x_1$};
 \draw (0,0,0.1) -- (0,0,-0.1) node[below, font=\small] {$0$};
 \draw (1,0,0.1) -- (1,0,-0.1) node[below, font=\small] {$1$};
 \draw (2,0,0.1) -- (2,0,-0.1) node[below, font=\small] {$2$};
 \draw (3,0,0.1) -- (3,0,-0.1) node[below, font=\small] {$3$};
 \draw (4,0,0.1) -- (4,0,-0.1) node[below, font=\small] {$4$};
 \draw (5,0,0.1) -- (5,0,-0.1) node[below, font=\small] {$5$};
-\draw (6,0,0.1) -- (6,0,-0.1) node[below, font=\small] {$6$};
-\draw[->] (0,-4) -- (0,1) node[above] {$x_2$};
-\draw (0,-4,0.1) -- (0,-4,-0.1) node[below,font=\small] {$-4$};
-\draw (0,-3,0.1) -- (0,-3,-0.1) node[below,font=\small] {$-3$};
-\draw (0,-2,0.1) -- (0,-2,-0.1) node[below,font=\small] {$-2$};
-\draw (0,-1,0.1) -- (0,-1,-0.1) node[below,font=\small] {$-1$};
+\draw[->] (0,0) -- (0,4) node[above] {$x_2$};
 \draw (0,0,0.1) -- (0,0,-0.1) node[below,font=\small] {$0$};
-\draw[->] (0,0,-5) -- (0,0,1) node[left] {$x_3$};
-\draw (-0.1,0,-5) -- (0.1,0,-5) node[left,font=\small] {$-5$};
-\draw (-0.1,0,-4) -- (0.1,0,-4) node[left,font=\small] {$-4$};
-\draw (-0.1,0,-3) -- (0.1,0,-3) node[left,font=\small] {$-3$};
-\draw (-0.1,0,-2) -- (0.1,0,-2) node[left,font=\small] {$-2$};
-\draw (-0.1,0,-1) -- (0.1,0,-1) node[left,font=\small] {$-1$};
-\draw (-0.1,0,0) -- (0.1,0,0) node[left,font=\small] {$0$};
+\draw (0,1,0.1) -- (0,1,-0.1) node[below,font=\small] {$1$};
+\draw (0,2,0.1) -- (0,2,-0.1) node[below,font=\small] {$2$};
+\draw (0,3,0.1) -- (0,3,-0.1) node[below,font=\small] {$3$};
+\draw[->] (0,0,0) -- (0,0,5) node[left] {$x_3$};
+\draw (0,0.1,0) -- (0,-0.1,0) node[left,font=\small] {$0$};
+\draw (0,0.1,1) -- (0,-0.1,1) node[left,font=\small] {$1$};
+\draw (0,0.1,2) -- (0,-0.1,2) node[left,font=\small] {$2$};
+\draw (0,0.1,3) -- (0,-0.1,3) node[left,font=\small] {$3$};
+\draw (0,0.1,4) -- (0,-0.1,4) node[left,font=\small] {$4$};
 \end{tikzpicture}
 \end{document}
