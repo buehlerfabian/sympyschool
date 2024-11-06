@@ -783,7 +783,7 @@ class Plane:
 
         return tickscode
 
-    def create_tikz_image(self, filename=None, color=False):
+    def create_tikz_image(self, filename=None, color=False, grid=False):
         """Creates a TikZ image of the plane.
 
         Args:
@@ -798,6 +798,14 @@ class Plane:
         code = ""
 
         code += self._create_tikz_preimage()
+
+        if grid:
+            code += (r"\draw[step=5mm,black!20] ("
+                     f"{-np.floor(.385*self._get_image_x1max())-.5}cm"
+                     f",{-np.floor(.385*self._get_image_x1max())-.5}cm)"
+                     " grid ("
+                     f"{self._get_image_x2max()}cm"
+                     f",{self._get_image_x3max()}cm);" "\n")
 
         # simple case: all 3 tracepoints exist
         tx1 = self.get_tracepoint_x1()[0].evalf()
