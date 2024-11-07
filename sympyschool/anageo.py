@@ -800,12 +800,20 @@ class Plane:
         code += self._create_tikz_preimage()
 
         if grid:
+            xmin = np.min([-np.floor(.385*self._get_image_x1max())-.5,
+                           self._get_image_x2min()])
+            xmax = np.max([-np.floor(.385*self._get_image_x1min()),
+                           self._get_image_x2max()])
+            ymin = np.min([-np.floor(.385*self._get_image_x1max())-.5,
+                           self._get_image_x3min()])
+            ymax = np.max([-np.floor(.385*self._get_image_x1min()),
+                           self._get_image_x3max()])
             code += (r"\draw[step=5mm,black!20] ("
-                     f"{-np.floor(.385*self._get_image_x1max())-.5}cm"
-                     f",{-np.floor(.385*self._get_image_x1max())-.5}cm)"
+                     f"{xmin}cm"
+                     f",{ymin}cm)"
                      " grid ("
-                     f"{self._get_image_x2max()}cm"
-                     f",{self._get_image_x3max()}cm);" "\n")
+                     f"{xmax}cm"
+                     f",{ymax}cm);" "\n")
 
         # simple case: all 3 tracepoints exist
         tx1 = self.get_tracepoint_x1()[0].evalf()
