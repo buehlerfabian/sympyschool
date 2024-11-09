@@ -735,6 +735,8 @@ class Plane:
 
     def _get_image_x3min(self):
         tx3 = self.get_tracepoint_x3()
+        if tx3 is None:
+            return 0
         if tx3[2] < 0:
             return np.floor(tx3[2].evalf())-1
         else:
@@ -742,6 +744,8 @@ class Plane:
 
     def _get_image_x3max(self):
         tx3 = self.get_tracepoint_x3()
+        if tx3 is None:
+            return 3
         if tx3[2] > 0:
             return np.ceil(tx3[2].evalf())+1
         else:
@@ -815,60 +819,119 @@ class Plane:
                      f"{xmax}cm"
                      f",{ymax}cm);" "\n")
 
+        tx1 = self.get_tracepoint_x1()
+        tx2 = self.get_tracepoint_x2()
+        tx3 = self.get_tracepoint_x3()
+
         # simple case: all 3 tracepoints exist
-        tx1 = self.get_tracepoint_x1()[0].evalf()
-        tx2 = self.get_tracepoint_x2()[1].evalf()
-        tx3 = self.get_tracepoint_x3()[2].evalf()
-        code += (r"\filldraw["
-                 f"{colorstring}"
-                 "] ("
-                 f"{tx1}"
-                 r",0,0) coordinate (s1) circle[radius=.7mm]"
-                 r" node[left,"
-                 f"{colorstring}"
-                 "] {$S_1$};"
-                 "\n")
-        code += (r"\filldraw["
-                 f"{colorstring}"
-                 "] (0,"
-                 f"{tx2}"
-                 r",0) coordinate (s2) circle[radius=.7mm]"
-                 r" node[above,"
-                 f"{colorstring}"
-                 "] {$S_2$};"
-                 "\n")
-        code += (r"\filldraw["
-                 f"{colorstring}"
-                 "] (0,0,"
-                 f"{tx3}"
-                 r") coordinate (s3) circle[radius=.7mm]"
-                 r" node[right,"
-                 f"{colorstring}"
-                 "] {$S_3$};"
-                 "\n")
-        code += (r"\filldraw ["
-                 f"{colorstring}"
-                 r", fill opacity=0.25] (s1) --"
-                 r" (s2) -- (s3) -- cycle;"
-                 "\n")
-        code += (r"\draw[->] ("
-                 f"{self._get_image_x1min()}"
-                 ",0) -- ("
-                 f"{self._get_image_x1max()}"
-                 r",0) node[left] {$x_1$};" "\n")
-        code += self._get_image_ticks_code_x1()
-        code += (r"\draw[->] (0,"
-                 f"{self._get_image_x2min()}"
-                 ") -- (0,"
-                 f"{self._get_image_x2max()}"
-                 r") node[above] {$x_2$};" "\n")
-        code += self._get_image_ticks_code_x2()
-        code += (r"\draw[->] (0,0,"
-                 f"{self._get_image_x3min()}"
-                 ") -- (0,0,"
-                 f"{self._get_image_x3max()}"
-                 r") node[left] {$x_3$};" "\n")
-        code += self._get_image_ticks_code_x3()
+        if (tx1 is not None) and (tx2 is not None) and (tx3 is not None):
+            tx1 = tx1[0].evalf()
+            tx2 = tx2[1].evalf()
+            tx3 = tx3[2].evalf()
+            code += (r"\filldraw["
+                     f"{colorstring}"
+                     "] ("
+                     f"{tx1}"
+                     r",0,0) coordinate (s1) circle[radius=.7mm]"
+                     r" node[left,"
+                     f"{colorstring}"
+                     "] {$S_1$};"
+                     "\n")
+            code += (r"\filldraw["
+                     f"{colorstring}"
+                     "] (0,"
+                     f"{tx2}"
+                     r",0) coordinate (s2) circle[radius=.7mm]"
+                     r" node[above,"
+                     f"{colorstring}"
+                     "] {$S_2$};"
+                     "\n")
+            code += (r"\filldraw["
+                     f"{colorstring}"
+                     "] (0,0,"
+                     f"{tx3}"
+                     r") coordinate (s3) circle[radius=.7mm]"
+                     r" node[right,"
+                     f"{colorstring}"
+                     "] {$S_3$};"
+                     "\n")
+            code += (r"\filldraw ["
+                     f"{colorstring}"
+                     r", fill opacity=0.25] (s1) --"
+                     r" (s2) -- (s3) -- cycle;"
+                     "\n")
+            code += (r"\draw[->] ("
+                     f"{self._get_image_x1min()}"
+                     ",0) -- ("
+                     f"{self._get_image_x1max()}"
+                     r",0) node[left] {$x_1$};" "\n")
+            code += self._get_image_ticks_code_x1()
+            code += (r"\draw[->] (0,"
+                     f"{self._get_image_x2min()}"
+                     ") -- (0,"
+                     f"{self._get_image_x2max()}"
+                     r") node[above] {$x_2$};" "\n")
+            code += self._get_image_ticks_code_x2()
+            code += (r"\draw[->] (0,0,"
+                     f"{self._get_image_x3min()}"
+                     ") -- (0,0,"
+                     f"{self._get_image_x3max()}"
+                     r") node[left] {$x_3$};" "\n")
+            code += self._get_image_ticks_code_x3()
+
+        # case: two of three tracepoints exist
+        if (tx1 is not None) and (tx2 is not None) and (tx3 is None):
+            tx1 = tx1[0].evalf()
+            tx2 = tx2[1].evalf()
+            code += (r"\filldraw["
+                     f"{colorstring}"
+                     "] ("
+                     f"{tx1}"
+                     r",0,0) coordinate (s1) circle[radius=.7mm]"
+                     r" node[left,"
+                     f"{colorstring}"
+                     "] {$S_1$};"
+                     "\n")
+            code += (r"\filldraw["
+                     f"{colorstring}"
+                     "] (0,"
+                     f"{tx2}"
+                     r",0) coordinate (s2) circle[radius=.7mm]"
+                     r" node[above,"
+                     f"{colorstring}"
+                     "] {$S_2$};"
+                     "\n")
+            code += (r"\path "
+                     "(s2) ++(0,0,2) "
+                     r"coordinate (h3) circle[radius=.7mm];"
+                     "\n")
+            code += (r"\path"
+                     "(s1) ++(0,0,2) "
+                     r"coordinate (h4) circle[radius=.7mm];"
+                     "\n")
+            code += (r"\filldraw ["
+                     f"{colorstring}"
+                     r", fill opacity=0.25] (s1) --"
+                     r" (s2) -- (h3) -- (h4) -- cycle;"
+                     "\n")
+            code += (r"\draw[->] ("
+                     f"{self._get_image_x1min()}"
+                     ",0) -- ("
+                     f"{self._get_image_x1max()}"
+                     r",0) node[left] {$x_1$};" "\n")
+            code += self._get_image_ticks_code_x1()
+            code += (r"\draw[->] (0,"
+                     f"{self._get_image_x2min()}"
+                     ") -- (0,"
+                     f"{self._get_image_x2max()}"
+                     r") node[above] {$x_2$};" "\n")
+            code += self._get_image_ticks_code_x2()
+            code += (r"\draw[->] (0,0,"
+                     f"{self._get_image_x3min()}"
+                     ") -- (0,0,"
+                     f"{self._get_image_x3max()}"
+                     r") node[left] {$x_3$};" "\n")
+            code += self._get_image_ticks_code_x3()
 
         code += self._create_tikz_postimage()
 
