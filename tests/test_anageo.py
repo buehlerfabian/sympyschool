@@ -228,3 +228,21 @@ def test_plane_get_tracepoint_x3():
 
     E = ag.Plane.fromCoordinateEq(2, 3, 0, 0)
     assert E.get_tracepoint_x3() == ag.vvv(0, 0, 0)
+
+
+def test_create_tikz_image():
+    E = ag.Plane.fromCoordinateEq(2, -4, -3, 12)
+    imagecode = E.create_tikz_image(color=True, grid=True)
+
+    with open("tests/test_anageo_tikz_image1.tex", "r") as file:
+        expected_imagecode = file.read()
+
+    assert imagecode == expected_imagecode
+
+    E = ag.Plane.fromCoordinateEq(2, 4, 3, 12)
+    imagecode = E.create_tikz_image()
+
+    with open("tests/test_anageo_tikz_image2.tex", "r") as file:
+        expected_imagecode = file.read()
+
+    assert imagecode == expected_imagecode
