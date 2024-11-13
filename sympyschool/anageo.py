@@ -693,7 +693,7 @@ class Plane:
         preimage += (r"\sisetup{locale=DE, per-mode=fraction, "
                      "separate-uncertainty=true}" "\n")
         preimage += r"\usepackage{tikz}" "\n"
-        preimage += r"\tikzset{x={(-3.85mm,-3.85mm)}}" "\n"
+        preimage += r"\tikzset{x={(-5mm,-5mm)}}" "\n"
         preimage += r"\tikzset{y={(10mm,0mm)}}" "\n"
         preimage += r"\tikzset{z={(0mm,10mm)}}" "\n"
         preimage += r"\begin{document}" "\n"
@@ -707,6 +707,8 @@ class Plane:
 
     def _get_image_x1min(self):
         tx1 = self.get_tracepoint_x1()
+        if tx1 is None:
+            return 0
         if tx1[0] < 0:
             return np.floor(tx1[0].evalf())-1
         else:
@@ -714,6 +716,8 @@ class Plane:
 
     def _get_image_x1max(self):
         tx1 = self.get_tracepoint_x1()
+        if tx1 is None:
+            return 3
         if tx1[0] > 0:
             return np.ceil(tx1[0].evalf())+1
         else:
@@ -721,6 +725,8 @@ class Plane:
 
     def _get_image_x2min(self):
         tx2 = self.get_tracepoint_x2()
+        if tx2 is None:
+            return 0
         if tx2[1] < 0:
             return np.floor(tx2[1].evalf())-1
         else:
@@ -728,6 +734,8 @@ class Plane:
 
     def _get_image_x2max(self):
         tx2 = self.get_tracepoint_x2()
+        if tx2 is None:
+            return 3
         if tx2[1] > 0:
             return np.ceil(tx2[1].evalf())+1
         else:
@@ -787,6 +795,28 @@ class Plane:
 
         return tickscode
 
+    def _generate_axes_code(self):
+        code = ''
+        code += (r"\draw[->] ("
+                 f"{self._get_image_x1min()}"
+                 ",0) -- ("
+                 f"{self._get_image_x1max()}"
+                 r",0) node[left] {$x_1$};" "\n")
+        code += self._get_image_ticks_code_x1()
+        code += (r"\draw[->] (0,"
+                 f"{self._get_image_x2min()}"
+                 ") -- (0,"
+                 f"{self._get_image_x2max()}"
+                 r") node[above] {$x_2$};" "\n")
+        code += self._get_image_ticks_code_x2()
+        code += (r"\draw[->] (0,0,"
+                 f"{self._get_image_x3min()}"
+                 ") -- (0,0,"
+                 f"{self._get_image_x3max()}"
+                 r") node[left] {$x_3$};" "\n")
+        code += self._get_image_ticks_code_x3()
+        return code
+
     def create_tikz_image(self, filename=None, color=False, grid=False):
         """Creates a TikZ image of the plane.
 
@@ -804,13 +834,13 @@ class Plane:
         code += self._create_tikz_preimage()
 
         if grid:
-            xmin = np.min([-np.floor(.385*self._get_image_x1max())-.5,
+            xmin = np.min([-np.floor(.5*self._get_image_x1max()),
                            self._get_image_x2min()])
-            xmax = np.max([-np.floor(.385*self._get_image_x1min()),
+            xmax = np.max([-np.floor(.5*self._get_image_x1min()),
                            self._get_image_x2max()])
-            ymin = np.min([-np.floor(.385*self._get_image_x1max())-.5,
+            ymin = np.min([-np.floor(.5*self._get_image_x1max()),
                            self._get_image_x3min()])
-            ymax = np.max([-np.floor(.385*self._get_image_x1min()),
+            ymax = np.max([-np.floor(.5*self._get_image_x1min()),
                            self._get_image_x3max()])
             code += (r"\draw[step=5mm,black!20] ("
                      f"{xmin}cm"
@@ -860,26 +890,10 @@ class Plane:
                      r", fill opacity=0.25] (s1) --"
                      r" (s2) -- (s3) -- cycle;"
                      "\n")
-            code += (r"\draw[->] ("
-                     f"{self._get_image_x1min()}"
-                     ",0) -- ("
-                     f"{self._get_image_x1max()}"
-                     r",0) node[left] {$x_1$};" "\n")
-            code += self._get_image_ticks_code_x1()
-            code += (r"\draw[->] (0,"
-                     f"{self._get_image_x2min()}"
-                     ") -- (0,"
-                     f"{self._get_image_x2max()}"
-                     r") node[above] {$x_2$};" "\n")
-            code += self._get_image_ticks_code_x2()
-            code += (r"\draw[->] (0,0,"
-                     f"{self._get_image_x3min()}"
-                     ") -- (0,0,"
-                     f"{self._get_image_x3max()}"
-                     r") node[left] {$x_3$};" "\n")
-            code += self._get_image_ticks_code_x3()
+            code += self._generate_axes_code()
 
         # case: two of three tracepoints exist
+        # S3 is missing
         if (tx1 is not None) and (tx2 is not None) and (tx3 is None):
             tx1 = tx1[0].evalf()
             tx2 = tx2[1].evalf()
@@ -914,24 +928,81 @@ class Plane:
                      r", fill opacity=0.25] (s1) --"
                      r" (s2) -- (h3) -- (h4) -- cycle;"
                      "\n")
-            code += (r"\draw[->] ("
-                     f"{self._get_image_x1min()}"
-                     ",0) -- ("
-                     f"{self._get_image_x1max()}"
-                     r",0) node[left] {$x_1$};" "\n")
-            code += self._get_image_ticks_code_x1()
-            code += (r"\draw[->] (0,"
-                     f"{self._get_image_x2min()}"
-                     ") -- (0,"
-                     f"{self._get_image_x2max()}"
-                     r") node[above] {$x_2$};" "\n")
-            code += self._get_image_ticks_code_x2()
-            code += (r"\draw[->] (0,0,"
-                     f"{self._get_image_x3min()}"
-                     ") -- (0,0,"
-                     f"{self._get_image_x3max()}"
-                     r") node[left] {$x_3$};" "\n")
-            code += self._get_image_ticks_code_x3()
+            code += self._generate_axes_code()
+
+        # S2 is missing
+        if (tx1 is not None) and (tx2 is None) and (tx3 is not None):
+            tx1 = tx1[0].evalf()
+            tx3 = tx3[2].evalf()
+            code += (r"\filldraw["
+                     f"{colorstring}"
+                     "] ("
+                     f"{tx1}"
+                     r",0,0) coordinate (s1) circle[radius=.7mm]"
+                     r" node[left,"
+                     f"{colorstring}"
+                     "] {$S_1$};"
+                     "\n")
+            code += (r"\filldraw["
+                     f"{colorstring}"
+                     "] (0,0,"
+                     f"{tx3}"
+                     r") coordinate (s3) circle[radius=.7mm]"
+                     r" node[above,"
+                     f"{colorstring}"
+                     "] {$S_3$};"
+                     "\n")
+            code += (r"\path "
+                     "(s3) ++(0,2,0) "
+                     r"coordinate (h3) circle[radius=.7mm];"
+                     "\n")
+            code += (r"\path"
+                     "(s1) ++(0,2,0) "
+                     r"coordinate (h4) circle[radius=.7mm];"
+                     "\n")
+            code += (r"\filldraw ["
+                     f"{colorstring}"
+                     r", fill opacity=0.25] (s1) --"
+                     r" (s3) -- (h3) -- (h4) -- cycle;"
+                     "\n")
+            code += self._generate_axes_code()
+
+        # S1 is missing
+        if (tx1 is None) and (tx2 is not None) and (tx3 is not None):
+            tx2 = tx2[1].evalf()
+            tx3 = tx3[2].evalf()
+            code += (r"\filldraw["
+                     f"{colorstring}"
+                     "] (0,"
+                     f"{tx2}"
+                     r",0) coordinate (s2) circle[radius=.7mm]"
+                     r" node[left,"
+                     f"{colorstring}"
+                     "] {$S_2$};"
+                     "\n")
+            code += (r"\filldraw["
+                     f"{colorstring}"
+                     "] (0,0,"
+                     f"{tx3}"
+                     r") coordinate (s3) circle[radius=.7mm]"
+                     r" node[above,"
+                     f"{colorstring}"
+                     "] {$S_3$};"
+                     "\n")
+            code += (r"\path "
+                     "(s3) ++(2,0,0) "
+                     r"coordinate (h3) circle[radius=.7mm];"
+                     "\n")
+            code += (r"\path"
+                     "(s2) ++(2,0,0) "
+                     r"coordinate (h4) circle[radius=.7mm];"
+                     "\n")
+            code += (r"\filldraw ["
+                     f"{colorstring}"
+                     r", fill opacity=0.25] (s2) --"
+                     r" (s3) -- (h3) -- (h4) -- cycle;"
+                     "\n")
+            code += self._generate_axes_code()
 
         code += self._create_tikz_postimage()
 

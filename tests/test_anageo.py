@@ -246,3 +246,27 @@ def test_create_tikz_image():
         expected_imagecode = file.read()
 
     assert imagecode == expected_imagecode
+
+    E = ag.Plane.fromCoordinateEq(2, 4, 0, 12)
+    imagecode = E.create_tikz_image(color=True, grid=True)
+
+    with open("tests/test_anageo_tikz_image3.tex", "r") as file:
+        expected_imagecode = file.read()
+
+    assert imagecode == expected_imagecode
+
+    E = ag.Plane.fromCoordinateEq(2, 0, 4, 12)
+    imagecode = E.create_tikz_image(color=True, grid=True)
+
+    with open("tests/test_anageo_tikz_image4.tex", "r") as file:
+        expected_imagecode = file.read()
+
+    assert imagecode == expected_imagecode
+
+    E = ag.Plane.fromCoordinateEq(0, 4, 6, 12)
+    imagecode = E.create_tikz_image(color=True, grid=True)
+
+    with open("tests/test_anageo_tikz_image5.tex", "r") as file:
+        expected_imagecode = file.read()
+
+    assert imagecode == expected_imagecode

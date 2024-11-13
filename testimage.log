@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Debian) (preloaded format=pdflatex 2024.10.29)  9 NOV 2024 16:50
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Debian) (preloaded format=pdflatex 2024.10.29)  13 NOV 2024 11:11
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -417,15 +417,15 @@ File: ot1zplm.fd 2002/09/08 Fontinst v1.914 font definitions for OT1/zplm.
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] (./testimage.aux) ) 
 Here is how much of TeX's memory you used:
- 18193 strings out of 477925
- 406047 string characters out of 5836951
- 1861330 words of memory out of 5000000
- 38057 multiletter control sequences out of 15000+600000
+ 18187 strings out of 477925
+ 405891 string characters out of 5836951
+ 1859330 words of memory out of 5000000
+ 38051 multiletter control sequences out of 15000+600000
  528799 words of font info for 70 fonts, out of 8000000 for 9000
  59 hyphenation exceptions out of 8191
- 102i,7n,104p,451b,655s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 102i,7n,104p,445b,649s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texlive/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on testimage.pdf (1 page, 21980 bytes).
+Output written on testimage.pdf (1 page, 21141 bytes).
 PDF statistics:
  22 PDF objects out of 1000 (max. 8388607)
  14 compressed objects within 1 object stream
