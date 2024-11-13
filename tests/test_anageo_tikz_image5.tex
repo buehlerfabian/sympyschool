@@ -14,8 +14,8 @@
 \draw[step=5mm,black!20] (-1.0cm,-1.0cm) grid (4cm,3cm);
 \filldraw[blue] (0,3.00000000000000,0) coordinate (s2) circle[radius=.7mm] node[left,blue] {$S_2$};
 \filldraw[blue] (0,0,2.00000000000000) coordinate (s3) circle[radius=.7mm] node[above,blue] {$S_3$};
-\path (s3) ++(2,0,0) coordinate (h3) circle[radius=.7mm];
-\path(s2) ++(2,0,0) coordinate (h4) circle[radius=.7mm];
+\path (s3) ++(2,0,0) coordinate (h3);
+\path(s2) ++(2,0,0) coordinate (h4);
 \filldraw [blue, fill opacity=0.25] (s2) -- (s3) -- (h3) -- (h4) -- cycle;
 \draw[->] (0,0) -- (3,0) node[left] {$x_1$};
 \draw (0,0,0.1) -- (0,0,-0.1) node[below, font=\small] {$0$};

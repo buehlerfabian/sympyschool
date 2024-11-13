@@ -1,8 +1,8 @@
 # Fdb version 4
-["pdflatex"] 1731492660 "/home/fabi/pyprog/sympyschool/testimage.tex" "testimage.pdf" "testimage" 1731492661 0
-  "/dev/null" 1731478328 0 d41d8cd98f00b204e9800998ecf8427e ""
+["pdflatex"] 1731530092 "/home/fabi/pyprog/sympyschool/testimage.tex" "testimage.pdf" "testimage" 1731530092 0
+  "/dev/null" 1731525779 0 d41d8cd98f00b204e9800998ecf8427e ""
   "/etc/texmf/web2c/texmf.cnf" 1730219442 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/fabi/pyprog/sympyschool/testimage.tex" 1731492654 1588 98959587ddcf874b4f5f73ff4be606c7 ""
+  "/home/fabi/pyprog/sympyschool/testimage.tex" 1731530092 1486 7894b1373eb6eefd2d4d80737041e467 ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/palatino/pplr7t.tfm" 1136768653 1804 7b5f73028f6509167f47ace9d69509ed ""
@@ -136,8 +136,8 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1681034085 39561 34c98e380bf7c7201ee6a7909aff625a ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1730219467 4515355 a319ad0bcc0d6802e7fde951d7e1b7da ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1730219483 6975780 9cca1edfb236cd0adc17f849a6ff763a ""
-  "testimage.aux" 1731492661 132 063cd77255c8c60019cf8d1b2062afe8 "pdflatex"
-  "testimage.tex" 1731492654 1588 98959587ddcf874b4f5f73ff4be606c7 ""
+  "testimage.aux" 1731530092 132 063cd77255c8c60019cf8d1b2062afe8 "pdflatex"
+  "testimage.tex" 1731530092 1486 7894b1373eb6eefd2d4d80737041e467 ""
   (generated)
   "testimage.aux"
   "testimage.log"

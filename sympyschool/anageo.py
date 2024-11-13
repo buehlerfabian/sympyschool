@@ -917,11 +917,11 @@ class Plane:
                      "\n")
             code += (r"\path "
                      "(s2) ++(0,0,2) "
-                     r"coordinate (h3) circle[radius=.7mm];"
+                     r"coordinate (h3);"
                      "\n")
             code += (r"\path"
                      "(s1) ++(0,0,2) "
-                     r"coordinate (h4) circle[radius=.7mm];"
+                     r"coordinate (h4);"
                      "\n")
             code += (r"\filldraw ["
                      f"{colorstring}"
@@ -954,11 +954,11 @@ class Plane:
                      "\n")
             code += (r"\path "
                      "(s3) ++(0,2,0) "
-                     r"coordinate (h3) circle[radius=.7mm];"
+                     r"coordinate (h3);"
                      "\n")
             code += (r"\path"
                      "(s1) ++(0,2,0) "
-                     r"coordinate (h4) circle[radius=.7mm];"
+                     r"coordinate (h4);"
                      "\n")
             code += (r"\filldraw ["
                      f"{colorstring}"
@@ -991,16 +991,110 @@ class Plane:
                      "\n")
             code += (r"\path "
                      "(s3) ++(2,0,0) "
-                     r"coordinate (h3) circle[radius=.7mm];"
+                     r"coordinate (h3);"
                      "\n")
             code += (r"\path"
                      "(s2) ++(2,0,0) "
-                     r"coordinate (h4) circle[radius=.7mm];"
+                     r"coordinate (h4);"
                      "\n")
             code += (r"\filldraw ["
                      f"{colorstring}"
                      r", fill opacity=0.25] (s2) --"
                      r" (s3) -- (h3) -- (h4) -- cycle;"
+                     "\n")
+            code += self._generate_axes_code()
+
+        # case: one of three tracepoints exists
+        # S1 exists
+        if (tx1 is not None) and (tx2 is None) and (tx3 is None):
+            tx1 = tx1[0].evalf()
+            code += (r"\filldraw["
+                     f"{colorstring}"
+                     "] ("
+                     f"{tx1}"
+                     r",0,0) coordinate (s1) circle[radius=.7mm]"
+                     r" node[left,"
+                     f"{colorstring}"
+                     "] {$S_1$};"
+                     "\n")
+            code += (r"\path "
+                     "(s1) ++(0,2,0) "
+                     r"coordinate (h2);"
+                     "\n")
+            code += (r"\path "
+                     "(h2) ++(0,0,2) "
+                     r"coordinate (h3);"
+                     "\n")
+            code += (r"\path"
+                     "(s1) ++(0,0,2) "
+                     r"coordinate (h4);"
+                     "\n")
+            code += (r"\filldraw ["
+                     f"{colorstring}"
+                     r", fill opacity=0.25] (s1) --"
+                     r" (h2) -- (h3) -- (h4) -- cycle;"
+                     "\n")
+            code += self._generate_axes_code()
+
+        # S2 exists
+        if (tx1 is None) and (tx2 is not None) and (tx3 is None):
+            tx2 = tx2[1].evalf()
+            code += (r"\filldraw["
+                     f"{colorstring}"
+                     "] (0,"
+                     f"{tx2}"
+                     r",0) coordinate (s2) circle[radius=.7mm]"
+                     r" node[left,"
+                     f"{colorstring}"
+                     "] {$S_2$};"
+                     "\n")
+            code += (r"\path "
+                     "(s2) ++(2,0,0) "
+                     r"coordinate (h2);"
+                     "\n")
+            code += (r"\path "
+                     "(h2) ++(0,0,2) "
+                     r"coordinate (h3);"
+                     "\n")
+            code += (r"\path"
+                     "(s2) ++(0,0,2) "
+                     r"coordinate (h4);"
+                     "\n")
+            code += (r"\filldraw ["
+                     f"{colorstring}"
+                     r", fill opacity=0.25] (s2) --"
+                     r" (h2) -- (h3) -- (h4) -- cycle;"
+                     "\n")
+            code += self._generate_axes_code()
+
+        # S3 exists
+        if (tx1 is None) and (tx2 is None) and (tx3 is not None):
+            tx3 = tx3[2].evalf()
+            code += (r"\filldraw["
+                     f"{colorstring}"
+                     "] (0,0,"
+                     f"{tx3}"
+                     r") coordinate (s3) circle[radius=.7mm]"
+                     r" node[left,"
+                     f"{colorstring}"
+                     "] {$S_3$};"
+                     "\n")
+            code += (r"\path "
+                     "(s3) ++(2,0,0) "
+                     r"coordinate (h2);"
+                     "\n")
+            code += (r"\path "
+                     "(h2) ++(0,2,0) "
+                     r"coordinate (h3);"
+                     "\n")
+            code += (r"\path"
+                     "(s3) ++(0,2,0) "
+                     r"coordinate (h4);"
+                     "\n")
+            code += (r"\filldraw ["
+                     f"{colorstring}"
+                     r", fill opacity=0.25] (s3) --"
+                     r" (h2) -- (h3) -- (h4) -- cycle;"
                      "\n")
             code += self._generate_axes_code()
 
